@@ -1,11 +1,12 @@
 ﻿using Microsoft.ML;
 using ML1_Resturante.ML;
-
+using ML1_Resturante.Tools;
 
 var context = new MLContext();
-var trainer = new Trainer(context);
-
+IDataLoader dataLoader = new TextFileDataLoader(context);
+ITrainer trainer = new Trainer(context, dataLoader);
 Predictor predictor = new Predictor();
 
-trainer.Train("C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\Data\\sampledata.csv");
-predictor.Predict("Very poor food");
+//trainer.LoadAndTrain("C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\Data\\sampledata.csv");
+string PositiveOrNegative = predictor.Predict("Very poor food");
+Console.WriteLine("Word is " + PositiveOrNegative);

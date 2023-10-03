@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace ML1_Resturante.ML
 {
@@ -44,6 +45,24 @@ namespace ML1_Resturante.ML
             var modelMetrics = _context.BinaryClassification.Evaluate(data: testSetTransform,
                 labelColumnName: nameof(ResturantFeedback.Label),
                 scoreColumnName: nameof(ResturantPrediction.Score));
+        }
+
+        private void TrainEmp(IDataView data)
+        {
+            var dataSplit = _context.Data.TrainTestSplit(data, testFraction: 0.2);
+            var dataProcessPipeline = _context.Transforms.CopyColumns("Label", nameof(EmploymentHistory.DurationInMonths))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.IsMarried)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.BsDegree)))
+                .Append(_context.Transforms.Concatenate("Features", typeof(EmploymentHistory).ToPropertyList<EmploymentHistory>(nameof(EmploymentHistory.DurationInMonths))));
+
+            ITransformer trainedModel = dataProcessPipeline.Fit(dataSplit.TrainSet);
+            _context.Model.Save(trainedModel, dataSplit.TrainSet.Schema, Environment.CurrentDirectory + "//TrainedModelEmp.mdl");
+            var testSetTransform = trainedModel.Transform(dataSplit.TestSet);
+
+            var trainer = _context.Regression.Trainers.Sdca(labelColumnName: "Label", featureColumnName: "Features");
+            var modelMetrics = _context.Regression.Evaluate(testSetTransform);
+
+
         }
     }
 
