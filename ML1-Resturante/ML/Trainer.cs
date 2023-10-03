@@ -1,5 +1,6 @@
 ﻿using Microsoft.ML;
 using ML1_Resturante.ML.Objects;
+using ML1_Resturante.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,39 +9,42 @@ using System.Threading.Tasks;
 
 namespace ML1_Resturante.ML
 {
-    public class Trainer
+    public class Trainer : ITrainer
     {
-        public void LoadFromTextFile(string filePath)
+        private readonly MLContext _context;
+        private readonly IDataLoader _dataLoader;
+
+        public Trainer(MLContext context, IDataLoader dataLoader)
         {
-            var context = new MLContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _dataLoader = dataLoader ?? throw new ArgumentNullException(nameof(dataLoader));
+        }
 
-            if (!File.Exists(filePath))
+        public void LoadAndTrain(string filePath)
+        {
+            var data = _dataLoader.LoadData(filePath);
+            if (data != null)
             {
-                Console.WriteLine($"Failed to find training data file ({filePath}");
-            }
-            else
-            {
-                var data = context.Data.LoadFromTextFile<ResturantFeedback>(filePath);
-                Train(context, data);
-
+                Train(data);
             }
         }
 
-        private static void Train(MLContext context, IDataView data)
+        private void Train(IDataView data)
         {
-            var dataSplit = context.Data.TrainTestSplit(data, testFraction: 0.2);
-            var dataProcessPipeline = context.Transforms.Text.FeaturizeText(outputColumnName: "Features",
+            var dataSplit = _context.Data.TrainTestSplit(data, testFraction: 0.2);
+            var dataProcessPipeline = _context.Transforms.Text.FeaturizeText(outputColumnName: "Features",
                 inputColumnName: nameof(ResturantFeedback.Text));
-            var sdcaRegressionTrainer = context.BinaryClassification.Trainers.SdcaLogisticRegression(
+            var sdcaRegressionTrainer = _context.BinaryClassification.Trainers.SdcaLogisticRegression(
             labelColumnName: nameof(ResturantFeedback.Label),
             featureColumnName: "Features");
             var trainingPipeline = dataProcessPipeline.Append(sdcaRegressionTrainer);
             ITransformer trainedModel = trainingPipeline.Fit(dataSplit.TrainSet);
-            context.Model.Save(trainedModel, dataSplit.TrainSet.Schema, Environment.CurrentDirectory + "//TrainedModel.mdl" );
+            _context.Model.Save(trainedModel, dataSplit.TrainSet.Schema, Environment.CurrentDirectory + "//TrainedModel.mdl");
             var testSetTransform = trainedModel.Transform(dataSplit.TestSet);
-            var modelMetrics = context.BinaryClassification.Evaluate(data: testSetTransform,
+            var modelMetrics = _context.BinaryClassification.Evaluate(data: testSetTransform,
                 labelColumnName: nameof(ResturantFeedback.Label),
                 scoreColumnName: nameof(ResturantPrediction.Score));
         }
     }
+
 }

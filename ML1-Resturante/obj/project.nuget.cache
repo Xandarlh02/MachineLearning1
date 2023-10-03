@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "S3IUUcclJJ7EH2AIxUZWVW7YQvoXCWD4o5Rt4Rl7LUZ2L7GP4d3ZJBBwwgtsDQ56DzaCGuT4eBSVQU9pJQfWpA==",
+  "dgSpecHash": "Y//lonbv+WljjjkK+pTCCtYgkMxdMAtnv4uR/CYIXbxegDvvqaBygP7evJxXfXIkqZf9IcR8BltXJ5Z78yHsxA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\ML1-Resturante.csproj",
+  "projectFilePath": "C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\ML1-Resturante.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alexandar Lackovic\\.nuget\\packages\\microsoft.ml\\2.0.1\\microsoft.ml.2.0.1.nupkg.sha512",
     "C:\\Users\\Alexandar Lackovic\\.nuget\\packages\\microsoft.ml.cpumath\\2.0.1\\microsoft.ml.cpumath.2.0.1.nupkg.sha512",

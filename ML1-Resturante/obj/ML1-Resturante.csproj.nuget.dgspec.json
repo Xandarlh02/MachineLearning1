@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\ML1-Resturante.csproj": {}
+    "C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\ML1-Resturante.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\ML1-Resturante.csproj": {
+    "C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\ML1-Resturante.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\ML1-Resturante.csproj",
+        "projectUniqueName": "C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\ML1-Resturante.csproj",
         "projectName": "ML1-Resturante",
-        "projectPath": "C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\ML1-Resturante.csproj",
+        "projectPath": "C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\ML1-Resturante.csproj",
         "packagesPath": "C:\\Users\\Alexandar Lackovic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\obj\\",
+        "outputPath": "C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Alexandar Lackovic\\AppData\\Roaming\\NuGet\\NuGet.Config",

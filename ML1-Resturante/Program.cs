@@ -1,7 +1,11 @@
-﻿using ML1_Resturante.ML;
+﻿using Microsoft.ML;
+using ML1_Resturante.ML;
 
-Trainer trainer = new Trainer();
+
+var context = new MLContext();
+var trainer = new Trainer(context);
+
 Predictor predictor = new Predictor();
 
-trainer.LoadFromTextFile("C:\\Users\\Alexandar Lackovic\\source\\repos\\ML1-Resturante\\Data\\sampledata.csv");
-predictor.Predict("Very good");
+trainer.Train("C:\\Users\\Alexandar Lackovic\\Documents\\GitHub\\MachineLearning1\\ML1-Resturante\\Data\\sampledata.csv");
+predictor.Predict("Very poor food");
