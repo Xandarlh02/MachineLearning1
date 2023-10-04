@@ -17,7 +17,7 @@ namespace ML1_Resturante.Tools
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IDataView LoadData(string filePath)
+        public IDataView LoadData<T>(string filePath) where T : class
         {
             if (!File.Exists(filePath))
             {
@@ -25,7 +25,8 @@ namespace ML1_Resturante.Tools
                 return null;
             }
 
-            return _context.Data.LoadFromTextFile<ResturantFeedback>(filePath);
+            return _context.Data.LoadFromTextFile<T>(filePath);
         }
+
     }
 }

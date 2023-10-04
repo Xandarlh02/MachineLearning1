@@ -10,5 +10,6 @@ namespace ML1_Resturante.ML
     public interface ITrainer
     {
         void LoadAndTrain(string filePath);
+        void LoadAndTrainEmp(string filePath);
     }
 }

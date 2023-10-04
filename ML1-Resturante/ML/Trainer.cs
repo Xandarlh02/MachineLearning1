@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using ML1_Resturante.Common;
 
 namespace ML1_Resturante.ML
 {
@@ -23,10 +24,19 @@ namespace ML1_Resturante.ML
 
         public void LoadAndTrain(string filePath)
         {
-            var data = _dataLoader.LoadData(filePath);
+            var data = _dataLoader.LoadData<ResturantFeedback>(filePath);
             if (data != null)
             {
                 Train(data);
+            }
+        }
+
+        public void LoadAndTrainEmp(string filePath)
+        {
+            var data = _dataLoader.LoadData<EmploymentHistory>(filePath);
+            if(data != null)
+            {
+                TrainEmp(data);
             }
         }
 
@@ -53,7 +63,24 @@ namespace ML1_Resturante.ML
             var dataProcessPipeline = _context.Transforms.CopyColumns("Label", nameof(EmploymentHistory.DurationInMonths))
                 .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.IsMarried)))
                 .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.BsDegree)))
-                .Append(_context.Transforms.Concatenate("Features", typeof(EmploymentHistory).ToPropertyList<EmploymentHistory>(nameof(EmploymentHistory.DurationInMonths))));
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.MsDegree)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.YearsExperience)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.AgeAtHire)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.HasKids)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.WithinMonthOfVesting)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.DeskDecorations)))
+                .Append(_context.Transforms.NormalizeMeanVariance(nameof(EmploymentHistory.LongCommute)))
+                .Append(_context.Transforms.Concatenate("Features",
+                    nameof(EmploymentHistory.IsMarried),
+                    nameof(EmploymentHistory.BsDegree),
+                    nameof(EmploymentHistory.MsDegree),
+                    nameof(EmploymentHistory.YearsExperience),
+                    nameof(EmploymentHistory.AgeAtHire),
+                    nameof(EmploymentHistory.HasKids),
+                    nameof(EmploymentHistory.WithinMonthOfVesting),
+                    nameof(EmploymentHistory.DeskDecorations),
+                    nameof(EmploymentHistory.LongCommute)
+                ));
 
             ITransformer trainedModel = dataProcessPipeline.Fit(dataSplit.TrainSet);
             _context.Model.Save(trainedModel, dataSplit.TrainSet.Schema, Environment.CurrentDirectory + "//TrainedModelEmp.mdl");
@@ -61,8 +88,6 @@ namespace ML1_Resturante.ML
 
             var trainer = _context.Regression.Trainers.Sdca(labelColumnName: "Label", featureColumnName: "Features");
             var modelMetrics = _context.Regression.Evaluate(testSetTransform);
-
-
         }
     }
 

@@ -9,6 +9,6 @@ namespace ML1_Resturante.Tools
 {
     public interface IDataLoader
     {
-        IDataView LoadData(string filePath);
+        IDataView LoadData<T>(string filePath) where T : class;
     }
 }
